@@ -1,6 +1,7 @@
 package org.apache.cxf
 
 import org.apache.cxf.jaxws.JaxWsProxyFactoryBean
+
 import scala.collection.Map
 
 trait ClientSetupHooks {

@@ -5,7 +5,7 @@ logLevel := Level.Warn
 resolvers += "Typesafe repository" at "https://repo.typesafe.com/typesafe/releases/"
 
 // Use the Play sbt plugin for Play projects
-addSbtPlugin("org.playframework" % "sbt-plugin" % "3.0.5")
+addSbtPlugin("org.playframework" % "sbt-plugin" % "3.0.12")
 
 addSbtPlugin("io.paymenthighway.sbt" % "sbt-cxf" % "1.7")
 

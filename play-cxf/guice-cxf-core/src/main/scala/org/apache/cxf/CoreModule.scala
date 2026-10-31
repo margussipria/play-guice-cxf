@@ -1,6 +1,6 @@
 package org.apache.cxf
 
-import javax.inject.{Inject, Provider, Singleton}
+import com.google.inject.{Inject, Provider, Singleton}
 
 import com.google.inject.binder.ScopedBindingBuilder
 import com.google.inject.{AbstractModule, Key, Scopes}

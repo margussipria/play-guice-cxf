@@ -1,8 +1,6 @@
 
 import controllers.Application
-import org.junit.runner._
 import org.scalatest.concurrent.ScalaFutures
-import org.scalatestplus.junit.JUnitRunner
 import org.scalatestplus.play.PlaySpec
 import org.scalatestplus.play.guice.GuiceOneAppPerSuite
 import play.api.test.FakeRequest
@@ -13,7 +11,6 @@ import play.api.test.Helpers._
  * You can mock out a whole application including requests, plugins etc.
  * For more information, consult the wiki.
  */
-@RunWith(classOf[JUnitRunner])
 class ApplicationSpec extends PlaySpec with GuiceOneAppPerSuite with ScalaFutures {
 
   "Application" should {

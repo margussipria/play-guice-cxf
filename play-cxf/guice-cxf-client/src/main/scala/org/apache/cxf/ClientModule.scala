@@ -6,8 +6,7 @@ import org.apache.cxf.config.Configuration
 import org.apache.cxf.jaxws.JaxWsProxyFactoryBean
 import org.apache.cxf.transport.http.HTTPTransportFactory
 
-import scala.collection.Seq
-import scala.collection.immutable
+import scala.collection.{Seq, immutable}
 import scala.reflect.{ClassTag, classTag}
 
 abstract class ClientModule(eagerly: Boolean = true) extends CoreModule(eagerly) {
@@ -53,7 +52,7 @@ object ClientModule {
   class ClientProvider[T : ClassTag](
     key: String,
     hooks: Seq[Class[_ <: ClientSetupHooks]] = Seq.empty
-  ) extends javax.inject.Provider[T] {
+  ) extends com.google.inject.Provider[T] {
     @Inject var bus: Bus = _
     @Inject var injector: com.google.inject.Injector = _
     var config: Config = ConfigFactory.load()

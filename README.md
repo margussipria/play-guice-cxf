@@ -1,9 +1,9 @@
 play-guice-cxf
 ==============
 
-[![][Build Status img]][Build Status]
+[![][CI Status img]][CI Status]
 
 Apache CXF custom transport module for using SOAP with Play Framework.
 
-[Build Status]:https://travis-ci.com/margussipria/play-guice-cxf
-[Build Status img]:https://travis-ci.com/margussipria/play-guice-cxf.svg?branch=master
+[CI Status]:https://github.com/margussipria/play-guice-cxf/actions/workflows/ci.yml
+[CI Status img]:https://github.com/margussipria/play-guice-cxf/actions/workflows/ci.yml/badge.svg?branch=main

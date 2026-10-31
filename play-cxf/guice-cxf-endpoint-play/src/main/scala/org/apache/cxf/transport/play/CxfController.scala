@@ -2,12 +2,11 @@ package org.apache.cxf.transport.play
 
 import java.io.OutputStream
 
-import javax.inject.{Inject, Singleton}
-
+import com.google.inject.{Inject, Singleton}
+import org.apache.cxf.message.Message
 import org.apache.pekko.stream.Materializer
 import org.apache.pekko.stream.scaladsl.{Sink, Source, StreamConverters}
 import org.apache.pekko.util.ByteString
-import org.apache.cxf.message.Message
 import play.api.http.HttpEntity
 import play.api.mvc._
 

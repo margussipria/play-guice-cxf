@@ -3,8 +3,9 @@ package org.apache.date_and_time_soap_http
 import java.time._
 import java.util.GregorianCalendar
 
-import javax.inject.Inject
 import javax.xml.datatype.{DatatypeConstants, DatatypeFactory, XMLGregorianCalendar}
+
+import com.google.inject.Inject
 
 import scala.language.implicitConversions
 

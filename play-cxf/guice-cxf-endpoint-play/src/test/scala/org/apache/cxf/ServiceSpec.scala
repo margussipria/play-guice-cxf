@@ -4,9 +4,9 @@ import java.io.File
 import java.time.{Clock, Instant, ZoneId, ZoneOffset}
 import java.util.concurrent.ConcurrentLinkedQueue
 
-import javax.inject.Provider
+import jakarta.xml.ws.BindingProvider
 
-import com.google.inject.AbstractModule
+import com.google.inject.{AbstractModule, Provider}
 import org.apache.cxf.message.Message
 import org.apache.cxf.phase.{AbstractPhaseInterceptor, Phase}
 import org.apache.cxf.transport.play.EndpointModule
@@ -41,7 +41,7 @@ class ServiceSpec extends freespec.AnyFreeSpec with GuiceableModuleConversions w
     }
   }
 
-  private def withApplication(f: Builder => Builder = identity)(testCode: Application => Any): Any = {
+  private def withApplication(f: Builder => Builder = identity)(testCode: (Application, Int) => Any): Any = {
 
     val builder = GuiceApplicationBuilder(eagerly = true)
       .bindings(
@@ -70,9 +70,18 @@ class ServiceSpec extends freespec.AnyFreeSpec with GuiceableModuleConversions w
 
     val application = f(builder).build()
 
-    Helpers.running(TestServer(Helpers.testServerPort, application)) {
-      testCode(application)
+    Helpers.runningWithPort(TestServer(Helpers.testServerPort, application)) { port =>
+      testCode(application, port)
     }
+  }
+
+  private def timeService(application: Application, port: Int): DateAndTime = {
+    val service = application.injector.instanceOf[DateAndTime]
+    service.asInstanceOf[BindingProvider].getRequestContext.put(
+      BindingProvider.ENDPOINT_ADDRESS_PROPERTY,
+      s"http://localhost:$port/service/strict"
+    )
+    service
   }
 
   "A time server" - {
@@ -86,12 +95,12 @@ class ServiceSpec extends freespec.AnyFreeSpec with GuiceableModuleConversions w
           }
         })
       )
-    } { app =>
+    } { (app, port) =>
 
       val request = new AskTimeRequest()
       request.setTimeZone("Europe/Helsinki")
 
-      app.injector.instanceOf[DateAndTime]
+      timeService(app, port)
         .askTime(request).getResponse.toString should be ("2013-10-28T00:04:00.246")
     }
 
@@ -105,12 +114,12 @@ class ServiceSpec extends freespec.AnyFreeSpec with GuiceableModuleConversions w
           }
         })
       )
-    } { app =>
+    } { (app, port) =>
 
       val request = new AskTimeRequest()
       request.setTimeZone("Europe/Helsinki")
 
-      val service = app.injector.instanceOf[DateAndTime]
+      val service = timeService(app, port)
       val queue = interceptResponseCode(service)
 
       val end = 25
@@ -137,8 +146,8 @@ class ServiceSpec extends freespec.AnyFreeSpec with GuiceableModuleConversions w
           }
         })
       )
-    } { app =>
-      val service = app.injector.instanceOf[DateAndTime]
+    } { (app, port) =>
+      val service = timeService(app, port)
 
       val request = new AskTimeRequest()
       request.setTimeZone("Europe/Helsinki")
@@ -158,42 +167,45 @@ class ServiceSpec extends freespec.AnyFreeSpec with GuiceableModuleConversions w
 
     "when asking wsdl" - {
 
-      "should return content as strict" in withApplication (identity) { app =>
+      "should return content as strict" in withApplication (identity) { (_, port) =>
 
         WsTestClient.withClient { client =>
 
           val result = Await.result(
-            client.url("http://localhost:19001/service/strict?wsdl").get(),
+            client.url(s"http://localhost:$port/service/strict?wsdl").get(),
             10 seconds
           )
 
+          result.status should be (Helpers.OK)
           (result.headers should contain key ("Content-Length")) (after being lowerCased)
         }
       }
 
-      "should return content as streamed" in withApplication (identity) { app =>
+      "should return content as streamed" in withApplication (identity) { (_, port) =>
 
         WsTestClient.withClient { client =>
 
           val result = Await.result(
-            client.url("http://localhost:19001/service/streamed?wsdl").get(),
+            client.url(s"http://localhost:$port/service/streamed?wsdl").get(),
             10 seconds
           )
 
+          result.status should be (Helpers.OK)
           (result.headers should not contain key ("Content-Length")) (after being lowerCased)
           (result.headers should not contain key ("Transfer-Encoding")) (after being lowerCased)
         }
       }
 
-      "should return content as chunked" in withApplication (identity) { app =>
+      "should return content as chunked" in withApplication (identity) { (_, port) =>
 
         WsTestClient.withClient { client =>
 
           val result = Await.result(
-            client.url("http://localhost:19001/service/chunked?wsdl").get(),
+            client.url(s"http://localhost:$port/service/chunked?wsdl").get(),
             10 seconds
           )
 
+          result.status should be (Helpers.OK)
           (result.headers should contain key ("Transfer-Encoding")) (after being lowerCased)
 
           result.headers("Transfer-Encoding") should contain ("chunked")
