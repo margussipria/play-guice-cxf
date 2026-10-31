@@ -1,7 +1,5 @@
 
-import org.junit.runner._
 import org.scalatest.concurrent.{IntegrationPatience, ScalaFutures}
-import org.scalatestplus.junit.JUnitRunner
 import org.scalatestplus.play.PlaySpec
 import org.scalatestplus.play.guice.GuiceOneServerPerTest
 import play.api.libs.ws.WSClient
@@ -11,7 +9,6 @@ import play.api.test.Helpers._
  * add your integration spec here.
  * An integration test will fire up a whole play application
  */
-@RunWith(classOf[JUnitRunner])
 class IntegrationSpec extends PlaySpec with GuiceOneServerPerTest with ScalaFutures with IntegrationPatience {
 
   "Application" should {

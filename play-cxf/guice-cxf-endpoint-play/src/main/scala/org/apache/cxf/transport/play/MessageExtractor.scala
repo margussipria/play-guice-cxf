@@ -2,9 +2,9 @@ package org.apache.cxf.transport.play
 
 import java.io.InputStream
 
-import org.apache.pekko.util.ByteString
 import com.google.inject.ImplementedBy
 import org.apache.cxf.message.{Message, MessageImpl}
+import org.apache.pekko.util.ByteString
 import play.api.mvc.{RawBuffer, Request}
 
 import scala.jdk.CollectionConverters._
@@ -26,7 +26,7 @@ class MessageExtractorImpl extends MessageExtractor {
     msg.put(Message.ACCEPT_CONTENT_TYPE, request.headers.get(Message.ACCEPT_CONTENT_TYPE).orNull)
     msg.put("Remote-Address", request.remoteAddress)
 
-    request.body.asBytes() foreach { arr: ByteString =>
+    request.body.asBytes() foreach { (arr: ByteString) =>
       msg.setContent(classOf[InputStream], arr.iterator.asInputStream)
     }
 

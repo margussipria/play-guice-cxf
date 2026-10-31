@@ -1,6 +1,6 @@
 package services.hello
 
-import javax.jws.WebService
+import jakarta.jws.WebService
 
 import services.Greeter
 
