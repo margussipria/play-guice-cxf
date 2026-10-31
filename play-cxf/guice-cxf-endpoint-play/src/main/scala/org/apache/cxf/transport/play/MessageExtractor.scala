@@ -2,7 +2,7 @@ package org.apache.cxf.transport.play
 
 import java.io.InputStream
 
-import akka.util.ByteString
+import org.apache.pekko.util.ByteString
 import com.google.inject.ImplementedBy
 import org.apache.cxf.message.{Message, MessageImpl}
 import play.api.mvc.{RawBuffer, Request}

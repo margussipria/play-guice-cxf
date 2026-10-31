@@ -17,7 +17,7 @@ def module(id: String, base: java.io.File): Project = {
 
       organization := "eu.sipria.play",
 
-      version := "1.8.0",
+      version := "1.9.0",
 
       scalaVersion := "2.13.6",
       crossScalaVersions := Seq("2.12.14", "2.13.6"),
@@ -45,7 +45,7 @@ val guiceCore = module("guice-cxf-core", file("guice-cxf-core"))
 
       "com.google.inject" % "guice"               % "4.2.3",
 
-      "com.typesafe.play" %% "play"               % PlayVersion % Optional,
+      "org.playframework" %% "play"               % PlayVersion % Optional,
     )
   )
 
@@ -66,16 +66,16 @@ val guicePlayEndpoint = module("guice-cxf-endpoint-play", file("guice-cxf-endpoi
   .settings(
 
     libraryDependencies ++= Seq(
-      "com.typesafe.play" %% "play"                     % PlayVersion % Provided,
-      "com.typesafe.play" %% "play-guice"               % PlayVersion % Provided,
-      "com.typesafe.play" %% "play-logback"             % PlayVersion % Test,
+      "org.playframework" %% "play"                     % PlayVersion % Provided,
+      "org.playframework" %% "play-guice"               % PlayVersion % Provided,
+      "org.playframework" %% "play-logback"             % PlayVersion % Test,
 
       "org.apache.cxf" % "cxf-core"                     % CxfVersion,
       "org.apache.cxf" % "cxf-rt-frontend-jaxws"        % CxfVersion  % Provided,
 
-      "com.typesafe.play" %% "play"                     % PlayVersion % Test,
-      "com.typesafe.play" %% "play-guice"               % PlayVersion % Test,
-      "com.typesafe.play" %% "play-akka-http-server"    % PlayVersion % Test,
+      "org.playframework" %% "play"                     % PlayVersion % Test,
+      "org.playframework" %% "play-guice"               % PlayVersion % Test,
+      "org.playframework" %% "play-pekko-http-server"    % PlayVersion % Test,
 
       "org.apache.cxf" % "cxf-rt-transports-http"       % CxfVersion  % Test,
 
